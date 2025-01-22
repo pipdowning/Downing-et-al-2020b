@@ -1,0 +1,676 @@
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+DATA FOR:
+
+The Benefits of Help in Cooperative Birds – non-existent or difficult to detect?
+
+	collected by Philip. A. Downing
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+	
+## FUNCTIONS ##
+
+dTOr <- function(d, n1, n2){r <- d / sqrt(d^2 + ((n1+n2)^2/(n1*n2)))
+	return(r)}	# from Nakagawa & Cuthill (2007)
+zr <- function(r){1/2 * log((1+r)/(1-r))}
+varianceEffect <- function(se, n){(se*sqrt(n))^2}
+
+Calc.d <- function(CMean, CVAR, CN, EMean, EVAR, EN, adjusted=T){
+                   sPooled <- sqrt(((EN - 1)*EVAR + (CN - 1)*CVAR) / (EN + CN - 2))  
+                   d <- (EMean - CMean) / sPooled
+                   H.d <- d * (1 - (3 / (4 * (EN + CN - 2) - 1)))
+                   if(adjusted==T){return(H.d)}
+                   if(adjusted==F){return(d)}}
+
+zrVar <- function(n){1 / (n-3)}
+
+# convert U to rank biserial correlation use: rb = 1 - ((2*U) / (n1*n2)) (Wendt 1972) 
+# convert W to rank biserial correlation use: rb = W/S (where S = sum of ranks) (author?)
+# convert T to rank biserial correlation use: rb = ((S - T)/S) - (T/S) (where S-T = W)
+# convert rank biserial correlation to r use: r = 2 * sin((pi * rho) / 6) (assumes that rank biserial ~ Spearman's rho; author?)
+# can use r functions: psignrank() to get T from p values and pwilcox() to get the same from U 
+# convert t from multiple regression to use: r = t/sqrt(t^2 + df) (equation 11 in Nakagawa & Cuthill 2007)
+
+# dunbiased = Hedge's d and dbiased =  Cohen's d or Hedge's g
+# Cohen (1998)
+	+ r = 0.1 = small effect
+	+ r = 0.3 = medium effect
+	+ r = 0.5 = large effect
+
+# convert Zr back to r using: r = (exp(2*Zr)-1) / (exp(2*Zr)+1) (Rosenthal 1991)
+# and r has sampling variance: ((1-r^2)^2) / (n-1) (Rosenthal 1991)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+				REMOVAL EXPERIMENTS
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Acrocephalus sechellensis ###
+
+## Komdeur (1994) ##
+
+# study details: 2 experiments
+I) compared r.s. of 6 groups reduced to pairs and 9 matched control groups
+15 pairs + 1 helper (territory quality the same in exp. and control groups)
+helper removed from 6, left in nine
+II) compared r.s. in 6 groups reduced to trios and 6 control trios on medium quality territories (groups reduced to three had higher r.s. than matched control groups)
+
+# category: removal experiment
+# study design: unpaired (done in one year, also paired, but can’t use as correlations across matched pairs not reported)
+# territory quality control: number of prey insects equal between experimental and control units
+# breeder experience control: only compared pairs aged 3 to 7 years that had all previously bred
+# social disruption: no - reducing groups to 3 caused an increase in r.s.
+# breeder survival: not affected by removals (remained 100%)
+# mechanism of group size effect: helping groups have higher r.s. than non-helping groups suggesting that alloparental care improves r.s. (figure 2)
+
+# reproductive success measure: x2
+- annual number of yearlings
+- annual number of fledged young
+
+# effect size source: x2
+- Figure 9a (annual number of fledged young)
+- Figure 9b (annual number of yearlings)
+
+# effect size calculation: one-tailed Mann-Whitney U test converted to Zr
+annual number of fledged young
+(note - if p < 0.025 and n1 = 6 and n2 = 9, if and pwilcox(10, 6, 9) returns p = 0.025 then U ~ 10; from statistical tables this is correct for p = 0.05) 
+- convert U to rank biserial correlation: rb = 1 - ((2*10) / (6*9)) = 0.630
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.630)/6) = 0.648
+- z transform: 0.5*log((1+0.648)/(1-0.648)) = 0.772
+- sampling variance using: 1 / (15-3) = 0.083
+
+
+# direction: exp. groups < control groups
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Aphelocoma coerulescens ###
+
+## Mumme (1992) ##
+
+# study details: compared r.s. of 16 groups reduced to pairs with 21 control groups
+groups reduced to 2 had lower r.s. than control groups
+
+# category: removal experiment
+# study design: unpaired (removals done in two years)
+# territory quality control: random assignment to exp. and control groups
+# breeder experience control: random assignment to exp. and control groups
+# social disruption: removals had no effect on survival, reproductive effort and hatching success
+# breeder survival: removals had no effect on survival
+# mechanism of group size effect: helpers providing care to offspring (not just their presence); “the additional food provided by allofeeders resulted in more rapid growth and development of nestlings“
+
+# reproductive success measure: x2
+- n young surviving to fledgling (day 16-20)
+- n young surviving to dependence (day 60)
+
+# effect size source: x2
+- Figure 1A (young fledged)
+- Figure 1B (young alive day 60, total)
+
+# effect size calculation: one-tailed Mann-Whitney U test converted to Zr
+
+young fledged (note - if p = 0.08 and n1 = 16 and n2 = 21 and pwilcox(121, 16, 21) returns p = 0.08, then U ~ 121; from statistical tables this is ~ correct for p = 0.05)
+- convert U to rank biserial correlation: rb = 1 - ((2*121) / (16*21)) = 0.280
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.280)/6) = 0.292
+- z transform: 0.5*log((1+0.292)/(1-0.292)) = 0.301
+- sampling variance using: 1 / (37-3) = 0.029
+
+# direction: exp. groups < control groups
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+## Pomatostomus temporalis ###
+
+## Brown et al. (1982) ##
+
+# study details: compared 9 groups reduced to trios with 11 control groups (matched for original size)
+
+# category: removal experiment
+# study design: unpaired
+# territory quality control: random assignment to exp. and control groups and these groups did not differ in vegetation on the territory
+# breeder experience control: random assignment to exp. and control groups did not differ in breeder age
+# social disruption: experimental and control groups were treated equally (mist netted and banded) and all units remained on their territories for several months following the experiment
+# breeder survival: NA
+# mechanism of group size effect: improved r.s. is “caused mainly by the helpers or by an interaction of the helpers with another variable”
+
+# reproductive success measure: number of fledglings (from second and subsequent broods)
+
+# effect size source: reported in the text and raw data from footnote 13
+
+# effect size calculation: Mann-Whitney U-test: U = 76, p < 0.05, two-tailed
+(note - presumably, the larger U reported and if U1+U2 = n1*n2 then U1+76 = 99 therefore U1 = 23)
+(note - if p < 0.05 and n1 = 9 and n2 = 11, then U = 23 and 2*pwilcox(23, 9, 11) = 0.05; from the statistical tables U = 23 for p = 0.05 and n1 = 9 and n2 = 11) 
+- convert U to rank biserial correlation: rb = 1 - ((2*23) / (9*11)) = 0.535
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.535)/6) = 0.553
+- z transform: 0.5*log((1+0.553)/(1-0.553)) = 0.623
+- sampling variance using: 1 / (20-3) = 0.059
+
+the above also corresponds with the raw values
+reduced groups: 0.8 fledglings (raw values = 0, 0, 0, 0, 0, 1, 1, 2, 3)
+control groups: 2.4 fledglings (raw values = 0, 0, 1, 2, 2, 2, 2, 3, 3, 5, 6)
+wilcox.test(c(0, 0, 0, 0, 0, 1, 1, 2, 3), c(0, 0, 1, 2, 2, 2, 2, 3, 3, 5, 6))	# W = 23, p-value = 0.04127
+
+# direction: exp. groups < control groups
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+				MATCHED PAIRS COMPARISON
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Corvus brachyrhynchos ###
+
+## Caffrey (2000) ##
+
+# study details: compared 5 pairs (with previous breeding success) with and without helpers
+
+# category: matched pairs comparison
+# study design: paired (across 6 years)
+# territory quality control: American crows are not territorial in this population, invertebrate prey not associated with reproductive success, and use of paired design
+# breeder experience control: the pairs being compared had all previously bred successfully
+# social disruption: natural removal
+# breeder survival: helpers have no effect on breeder sx (from Caffrey 1999)
+# mechanism of group size effect: helpers associated with earlier nesting attempts which have lower mortality
+
+# reproductive success measure: fledgling production (nesting success scaled for year effects)
+
+# effect size source: results text
+
+# effect size calculation: two-tailed Wilcoxon signed rank test W = -9, p = 0.31
+(note - several potential estimates available, but the 5 pairs with and without helpers is the strictest test
+compared 5 pairs with helpers in some years but without helpers in other years)
+- psignrank(3, 5) = 0.15 (i.e. 0.31/2), then T ~ 3
+- convert T to rank biserial correlation: rb = ((sum(1:5) - 3)/sum(1:5)) - (3/sum(1:5)) = 0.6
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.6)/6) = 0.618
+- z transform: 0.5*log((1+0.618)/(1-0.618)) = 0.722
+- sampling variance using: 1 / (5-3) = 0.500
+
+alternatively, using W (note that these give identical results)
+- W = -9, p = 0.31
+- convert W to rank biserial correlation: 9/(1+2+3+4+5) = 0.600
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.6)/6) = 0.618
+- z transform: 0.5*log((1+0.618)/(1-0.618)) = 0.722
+
+# direction: 3/5 higher success when helped and 2/5 lower when unassisted
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Cyanocorax morio ###
+
+## Williams & Hale 2006 ##
+
+# study details: compared the reproductive success of 8 pairs in groups that change in size during the study (< 9 vs. >/= 9 individuals)
+
+# category: matched pairs comparison
+# study design: paired (from 5 years)
+# territory quality control: paired comparisons
+# breeder experience control: paired comparisons
+# social disruption: natural removal
+# breeder survival: not possible to determine helper effects on breeder sx
+# mechanism of group size effect: "We found little evidence that feeding per se by helpers was related to increases in productivity" - suggest due to predation
+
+# reproductive success measure: number of 30-day juveniles produced
+
+# effect size source: results text and Figure 4b
+
+# effect size calculation: paired t-test: t = 0.15, P = 0.44 (one-tailed), n = 8 paired contrasts
+- convert t to r: r = 0.15/sqrt(0.15^2 + 7) = 0.056
+- z transform: 0.5*log((1+0.056)/(1-0.056)) = 0.056
+- sampling variance using: 1 / (8-3) = 0.2
+
+# direction: groups that increased in size > groups that decreased in size: 2/8 groups that increased = decreased reproductive success (Figure 4b)
+
+"we believe that the difference in juvenile and probably in yearling production between small and large groups is attributable to the number of helpers and not the confounding effects of territory or female quality."
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+
+### Dacelo novaeguineae ###
+
+## Legge (2000) ##
+
+# study details: compared the reproductive success of 24 pairs with and without helpers; the study period included years of extreme weather conditions
+
+# category: matched pairs comparison
+# study design: paired (across 4 years)
+# territory quality control: paired comparisons
+# breeder experience control: paired comparisons
+# social disruption: natural removal
+# breeder survival: not possible to determine helper effects on breeder sx
+# mechanism of group size effect: breeders reduce provisioning rate (from another study)
+
+# reproductive success measure: number of nestlings present at 32 days
+
+# effect size source: results text and Figure 5a - y axis is change in number of offspring?
+
+# effect size calculation: Wilcoxon signed-rank test T = -25.5, p < 0.18, n = 24 paired contrasts (in Griffin & West 2003 says one tailed)
+(note - if p = 0.18 and n = 24 and psignrank(117, 24) gives p = 0.179 therefore T ~ 117 then)
+- convert T to rank biserial correlation use: ((sum(1:24) - 117)/sum(1:24)) - (117/sum(1:24)) = -0.22
+- convert rank biserial correlation to r: r = 2*sin((pi*0.22)/6) = -0.230
+- z transform: 0.5*log((1+0.230)/(1-0.230)) = -0.234
+- sampling variance using: 1 / (24-3) = 0.048
+(also note - if S = Tb + Ts therefore 300 = -25.5 + 325.5 so W should be huge!)
+
+# direction: group size did not affect reproductive success, but assume a negative effect size (groups without helpers > groups with helpers) based on Figure 5a
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Gymnorhinus cyanocephalus ###
+
+## Marzluff & Balda (1990) ##
+
+# study details: compared 16 pairs with helpers in some years but without helpers in other years
+
+# category: matched pairs comparison
+# study design: paired (across XX years?)
+# territory quality control: same pairs compared
+# breeder experience control: same pairs compared
+# social disruption: natural removal
+# breeder survival: NA
+# mechanism of group size effect: "Helpers appear to increase the rate at which nestlings are fed"
+
+# reproductive success measure: x2
+- median crechling production (young surviving to 3 months post fledging)
+- median yearling production
+
+# effect size source: x2 from Table 7.4 footnote a
+
+# effect size calculation: Wilcoxon signed rank test converted to Zr; compared 16 pairs with helpers in some years but without helpers in other years
+
+median crechling production: W = 82, p = 0.22 
+using the p value (assume two-tailed based on the other p value of 0.70)
+(note - if p2t = 0.22, then p1t = 0.11  and n = 16 and psignrank(43, 16) = 0.11, then T ~ 43)
+- convert T to rank biserial correlation: rb = ((sum(1:16) - 43)/sum(1:16)) - (43/sum(1:16)) = -0.368
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.368)/6) = -0.383
+- z transform: 0.5*log((1+0.383)/(1-0.383)) = -0.404
+- sampling variance using: 1 / (16-3) = 0.077
+
+# direction: groups without helpers > groups with helpers (to be conservative)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Picoides borealis ###
+
+## Lennartz et al (1987) ##
+
+# study details: compared 4 pairs observed with and without helpers
+
+# category: matched pairs comparison
+# study design: paired (across 6 years)
+# territory quality control: same pairs compared
+# breeder experience control: same pairs compared
+# social disruption: natural removal
+# breeder survival: no effect of helpers (see Reed & Walters 1996)
+# mechanism of group size effect: NA
+
+# reproductive success measure: number of young fledged
+
+# effect size source: reported in the results
+
+# effect size calculation: Wilcoxon paired-rank test: p = 0.07186 (two-tailed), n = 4 pairs
+test done in r with this code:
+x <- c(1,1,1,1)
+y <- c(2,2,2,2)
+(note - different values for x and y produce the same p value as long as the difference between them is 1)
+wilcox.test(x, y, paired=TRUE, exact=FALSE, alternative="two.sided")
+(note - if p2t = 0.07186, then p1t = 0.03593  and n = 4 and psignrank(0.4, 4) gives p = 0.06 therefore T < 0.4)
+- convert T to rank biserial correlation: rb = ((sum(1:4) - 0.4)/sum(1:4)) - (0.4/sum(1:4)) = 0.92
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.92)/6) = 0.927
+- z transform: 0.5*log((1+0.927)/(1-0.927)) = 1.637
+- sampling variance using: 1 / (4-3) = 1.0
+
+# direction: "2 groups which were pairs the first year but were assisted by helpers the second, and 2 groups that had helpers the first year but not the second. In all instances, groups with helpers produced 1 more chick per group than those without, for a cumulative increase of 67% in number of young fledged."
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Malurus cyaneus ###
+
+## Green et al. (1995) ##
+
+# study details: compared 21 pairs observed with and without helpers
+
+# category: matched pairs comparison
+# study design: paired (across 7 years)
+# territory quality control: same pairs compared
+# breeder experience control: same pairs compared
+# social disruption: natural removal
+# breeder survival: from Cockburn et al. (2008) - this is the main benefit
+# mechanism of group size effect: helpers reduced workload of breeding male
+
+# reproductive success measure: number of fledglings
+
+# effect size source: reported in the results
+
+# effect size calculation: Wilcoxon signed-rank test: t = 0.26, p = 0.80 (assume two-tailed)
+(note - if p2t = 0.80, then p1t = 0.40  and n = 21 and psignrank(108, 21) gives p = 0.406 therefore T ~ 108)
+- convert T to rank biserial correlation: rb = ((sum(1:21) - 108)/sum(1:21)) - (108/sum(1:21)) = 0.065
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.065)/6) = 0.068
+- z transform: 0.5*log((1+0.068)/(1-0.068)) = 0.068
+- sampling variance using: 1 / (21-3) = 0.056
+Tb = sum(1:21)-108 = 123 and W = 123-108 = 15 and 15/sum(1:21) = 0.065
+
+# direction: without helpers = 3.14 fledglings +/- 0.54 (se), n = 21; with helpers = 3.23 fledglings +/- 0.43 (se), n = 21
+pairs = 3.14 fledglings vs. groups = 3.23 fledglings
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Schetba rufa ###
+
+## Eguchi et al. (2002) ##
+
+# study details: compared 18 pairs with helpers in some years but without helpers in other years; this species has groups with helping and non-helping helpers
+
+# category: matched pairs comparison
+# study design: paired
+# territory quality control: same pairs compared
+# breeder experience control: same pairs compared
+# social disruption: natural removal
+# breeder survival: not able to measure helper effects on breeder survival, but breeding females reduce their workload
+# mechanism of group size effect: “Auxiliary males provided a considerable contribution towards antipredator defence, territory defence and to the provisioning of nestlings” but “provisioning by auxiliaries did not affect the reproductive success”
+
+# reproductive success measure: number of fledglings
+
+# effect size source: reported in the results
+
+# effect size calculation: Wilcoxon paired-rank test: p = 0.59 (assume two-tailed), n = 18 pairs
+(note - if p2t = 0.59, then p1t = 0.295  and n = 18 and psignrank(72, 18) gives p = 0.29 therefore T ~ 72)
+- convert T to rank biserial correlation: rb = ((sum(1:18) - 72)/sum(1:18)) - (72/sum(1:18)) = -0.158
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*-0.158)/6) = -0.165
+- z transform: 0.5*log((1+0.165)/(1-0.165)) = -0.167
+- sampling variance using: 1 / (18-3) = 0.067
+
+# direction: 18 paired: without helpers = 1.55 fledglings +/- 1.15 (sd?) and with helpers = 1.39 fledglings +/- 1.72 (sd?)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Sericornis frontalis ###
+
+## Magrath & Yezerinac (1997) ##
+
+# study details: compared 9 pairs with helpers in some years but without helpers in other years; this species has groups with helping and non-helping helpers
+
+# category: matched pairs comparison 
+# study design: paired (across 4 years)
+# territory quality control: same pairs compared
+# breeder experience control: same pairs compared (only compared second year females)
+# social disruption: natural removal
+# breeder survival:
+# mechanism of group size effect: only interested in helper effects here (mechanisms discussed separately) - can use helper and non-helper groups to tease apart group-size and helping effects; females had non-significantly greater reproductive success when breeding in a helper group than in a pair; 3/4 females had higher reproductive success when in a helper group than in a non-helper group
+
+# reproductive success measure: x2
+- fledglings
+- independent young
+
+# effect size source: x2 from results text
+
+# effect size calculation: 9 pairs compared using Wilcoxon matched pairs test
+
+fledglings (note - mean difference between groups and pairs = 11.9 +/- 24.1 (sd), n = 9; Wilcoxon matched pairs test: z = 1.6, p = 0.1, n = 9 females, assume two-tailed since this is reported for other tests)
+- convert to r using z/sqrt(n) = 1.6/sqrt(9) = 0.533
+- z transform: 0.5*log((1+0.533)/(1-0.533)) = 0.594
+- sampling variance using: 1 / (9-3) = 0.167
+
+# direction: the difference in r.s. is group - pair = 10.1 therefore groups have a positive effect; also 3/4 females had higher reproductive success when in a helper group than in a non-helper group
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Struthidea cinerea ###
+
+## Woxvold & Margath (2005) ##
+
+# study details: compared 11 groups that varied in size between nesting attempts in terms of annual productivity
+
+# category: matched pairs comparison
+# study design: paired (across 3 years)
+# territory quality control: same pairs compared (and 8/11 groups maintained the same territory between seasons)
+# breeder experience control: same pairs compared
+# social disruption: natural removals
+# breeder survival: not measured, but no group members benefit in terms of survival, but there is load-lighening in this species
+# mechanism of group size effect: improved r.s. “was attributed to the presence of helpers, as the number of birds that fed nestlings, but not group size, was significantly related to annual fledging success”
+# reproductive success measure: annual productivity (fledgling or yearling production)
+
+# effect size source: results text
+
+# effect size calculation: Wilcoxon paired-rank test: p = 0.031 (two-tailed, unless stated otherwise)
+(note - if p2t = 0.031, then p1t = 0.0155 and n = 11 and psignrank(9, 11) gives p = 0.016 therefore T ~ 9; from statistical tables if p between 0.05 and 0.02, then T is between 11 and 7)
+- convert T to rank biserial correlation: rb = ((sum(1:11) - 9)/sum(1:11)) - (9/sum(1:11)) = 0.727
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.727)/6) = 0.743
+- z transform: 0.5*log((1+0.743)/(1-0.743)) = 0.957
+- sampling variance using: 1 / (11-3) = 0.125
+
+# direction: 9/11 groups annual productivity was higher when the group was larger
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+				MULTIPLE REGRESSIONS
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Calocitta formosa ###
+
+## Innes & Johnston (1996) ##
+
+# study details: multiple regression to determine independent effects of helper number, territory and breeder quality on fledgling success (n = 9 groups); two kinds of helpers, full-time and part-time, fledgling success related to number of full-time helpers only, not overall group size (i.e. including part-time helpers)
+
+# category: multiple regression
+# study design: unpaired
+# territory quality control: territory
+# breeder experience control: breeding pair ID
+# social disruption: NA
+# breeder survival: NA
+# mechanism of group size effect: “the combination of helper number and helper contribution, and not the number of adult group members per se, influence fledgling production in this population”; accelerating date of first laying, decreasing egg and chick predation and increasing hatchability
+
+# reproductive success measure: total number of fledglings produced (fledgling production)
+
+# effect size source: results text
+
+# effect size calculation: r2 = 0.31, t = 3.10, df = 22, p < 0.01; n = 9 groups
+model: fledgling production ~ observation year + breeding pair ID + territory + n helpers (full time)
+- convert t from multiple regression to r: r = 3.1/sqrt(3.1^2 + 22) = 0.551
+- z transform: 0.5*log((1+0.551)/(1-0.551)) = 0.620
+- sampling variance using: 1 / (9-3) = 0.167
+this is the right value for n since the model included breeder ID (i.e. repeated measures)
+
+# direction: full-time helper number explained fledgling production while controlling for breeder id and territory quality
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Colaptes campestris ###
+
+## Dias et al. (2015) ##
+
+# study details: compared 27 groups that varied in size controlling for breeder and territory quality
+
+# category: multiple regression
+# study design: unpaired
+# territory quality control: food availability (approximated as the number of termite mounds per territory)
+# breeder experience control: body condition (residuals from regression of body mass on tarsus length)
+# social disruption: NA
+# breeder survival: not able to measure
+# mechanism of group size effect: heavier fledglings in groups
+
+# reproductive success measure: number of fledglings
+
+# effect size source: Table 1
+
+# effect size calculation: standardised coefficient = 1.26 +/- 0.76 (se) (Chi sq. = 5.9, 1 df, p = 0.01); n = 27 groups studied
+model: fledgling production ~ auxiliaries + group size + tq + bq + group (random)
+- convert Chi sq. to r: sqrt(5.9/27) = 0.468
+- z transform: 0.5*log((1+0.468)/(1-0.468)) = 0.508
+- sampling variance using: 1 / (27-3) = 0.042
+
+# direction: groups = 3.14 +/- 0.35 (se) fledglings vs. pairs = 2.03 +/- 0.27 (se) fledglings 
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Merops bullockoides ###
+
+## Emlen & Wrege (1991) ##
+
+# study details: compared 153 groups that varied in size to derive predictions for the effect of helpers on reproductive success controlling for breeder and territory quality
+
+# category: multiple regression
+# study design: unpaired
+# territory quality control: food availability
+# breeder experience control: breeder attributes
+# social disruption: NA
+# breeder survival: helpers did not affect breeder survival
+# mechanism of group size effect: helpers increase provisioning which decreases nestling starvation which increases fledging success
+
+# reproductive success measure: number of chicks fledged per nesting attempt
+
+# effect size source: Figure 1 (number fledged - adjusted mean i.e. independent of food availability and breeder attributes); compared the two most common group sizes
+
+# effect size calculation: number fledged ~ food availability + breeder attributes + group size; group size 2: 0.45 +/- 0.08 (se), n = 94 vs. group size 3: 1.11 +/- 0.09 (se), n = 59
+- varianceEffect(0.08, 94)			# 0.602
+- varianceEffect(0.09, 59)			# 0.478
+- Calc.d(0.45, 0.602, 94, 1.11, 0.478, 59)	# 0.882
+- dTOr(0.882, 94, 59)				# 0.395
+- zr(0.395)					# 0.418
+- 1/((94+59)-3)					# 0.007
+Sp <- sqrt((((94-1)*0.602)+((59-1)*0.479)) / (94+59-2))
+t <- (1.11 - 0.45) / (Sp * sqrt((1/94) + (1/59)))		# t = 5.34
+2*pt(t, 151, lower=F)	# 0.0000003 (or use 2*pt(-abs(t), 151))
+
+# direction: 0.5 +/- 0.06 (se) offspring per helper
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Lamprotornis superbus ###
+
+## Guindre-Parker & Rubenstein (2018) ##
+
+# study details: compared 65 groups controlling for breeder and territory quality
+
+# category: multiple regression
+# study design: unpaired (from 2002 to 2015)
+# territory quality control: rainfall and grass cover included in the model
+# breeder experience control: breeder identity included in the model
+# social disruption: NA
+# breeder survival: NA but there is load-lightening in this species
+# mechanism of group size effect: helpers decrease predation but not starvation
+
+# reproductive success measure: number of fledglings
+
+# effect size source: Table 1 (p < 0.05)
+- convert to r using z/sqrt(n) = 3.71/sqrt(65) = 0.460
+- z transform: 0.5*log((1+0.460)/(1-0.460)) = 0.497
+- sampling variance using: 1 / (65-3) = 0.016
+
+# effect size calculation: number of fledglings ~ pre-rain + rain + grass cover + n. helpers + x3 interactions + mother ID + father ID + year (n = 65 breeding females, consistent with figure 1a); n. helpers: 0.82 +/- 0.22 (se), Z = 3.71; fixed effects were z transformed
+
+# direction: alloparents increase fledgling production
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Philetairus socius ###
+
+## Covas et al. (2008) ##
+
+# study details: compared 29 groups (Fig 4a) controlling for breeder and territory quality
+
+# category: multiple regression
+# study design: unpaired (2 breeding seasons)
+# territory quality control: sociable weavers are not territorial, but rainfall and colony size included in the model
+# breeder experience control: breeder identity included in the model (random term)
+# social disruption: NA
+# breeder survival: load lightening may contribute fo improved sx, but remains to be tested
+# mechanism of group size effect:
+
+# reproductive success measure: number of young fledged per pair per season 
+
+# effect size source: reported in the results
+
+# effect size calculation: F = 8.34 (df = 1, 56), p = 0.006, 0.27 +/- 0.09
+number fledgling per season ~ group size + rainfall + colony size + brood number + year + predation + various interactions + pair ID (random)
+- convert F top t: sqrt(8.34) = 2.9
+- convert t to r: r = 2.9/sqrt(2.9^2 + 56) = 0.361
+- z transform: 0.5*log((1+0.361)/(1-0.361)) = 0.378
+- sampling variance using: 1 / (29-3) = 0.039
+note assumed that n = 29 based on Figure 4a
+
+# direction: Fig 4 a: bigger groups > smaller groups
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+					OTHER
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Corcorax melanorhamphos ###
+
+## Boland et al. (1997) ##
+
+# study details: 13 randomly chosen chough groups varying in size from 4 to 10 given supplementary food (13 groups matched for size used as controls)
+
+# category: food supplement experiment
+# study design: unpaired (done in one year)
+# territory quality control: white-winged choughs are not territorial but supplementary feeding should normalises foraging conditions
+# breeder experience control: supplementary food resulted in comparable feeding rates of group members
+# social disruption: supplementary food had a clear positive effect (increased provisioning)
+# breeder survival: NA
+# mechanism of group size effect: experimental groups increased rate of food delivery resulting in increased chick growth and survival
+
+# reproductive success measure: number of fledglings
+
+# effect size source: Figure 4 using exp. groups only
+
+# effect size calculation:
+gSize <- c(4, 4, 4, 4, 5, 5, 6, 6, 7, 8, 8, 10)
+nYoung <- c(2, 2, 2, 3, 2, 3, 3, 4, 3, 2, 3, 4)
+cor.test(gSize, nYoung, method = "pearson")	# r = 0.534, p = 0.074
+- z transform: 0.5*log((1+0.534)/(1-0.534)) = 0.596
+- sampling variance using: 1 / (12-3) = 0.111
+note that n = 12 since 1 data point (presumably) obscured
+
+# direction: reproductive success increases with group size
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+### Campylorhinchus griseus ###
+
+## Austad & Rabenold (1985) ##
+
+# study details: 8 most productive territories compared with and without helpers
+
+# category: matched pairs comparison
+# study design: paired (natural removals occurred across several years)
+# territory quality control: pairs compared on the same territories
+# breeder experience control: unaided yearling and older females did not differ in reproductive success
+# social disruption: natural removal
+# breeder survival: NA but breeders have higher sx. than helpers
+# mechanism of group size effect: effective nest defence vs. predators (exp to show this), not feeding rate
+
+# reproductive success measure: number of juveniles surviving until 30 days past fledging
+
+# effect size source: results text
+
+# effect size calculation: one-tailed Mann-Whitney U test converted to Zr
+(note - if p = 0.025 and n1 = 12 and n2 = 22 pwilcox(77, 12, 22) returns p = 0.024 then U ~ 69; from statistical tables this is ~ correct for p = 0.05)
+U = 77 (if p = 0.024 and n1 = 12 and n2 = 22)
+- convert U to rank biserial correlation: rb = 1 - ((2*77) / (12*22)) = 0.417
+- convert rank biserial correlation to Speaman's rho: r = 2*sin((pi*0.417)/6) = 0.433
+- z transform: 0.5*log((1+0.433)/(1-0.433)) = 0.464
+- sampling variance using: 1 / (34-3) = 0.20
+note that this assumes that no correlation between samples, which seems incorrect
+
+# direction: groups without helpers < groups with helpers; r.s. without helpers = 0.86 juveniles / group year (n=22) and r.s. with helpers = 1.58 juveniles / group-22year (n=12)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+
